@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd     
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd     
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+		
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+         	<bean id="jsonConverter" class="cn.nhorizon.cp.converters.FastJsonHttpMessageConverter">
+		        <property name="supportedMediaTypes">
+		            <list>
+		                <value>application/x-www-form-urlencoded</value>
+		                <value>application/json</value>
+		            </list>
+		        </property>
+		        <property name="serializerFeature">
+		            <array>
+		                <value>WriteDateUseDateFormat</value>
+		                <value>WriteNullNumberAsZero</value>
+		            </array>
+		        </property>
+		    </bean>
+             <bean class = "org.springframework.http.converter.StringHttpMessageConverter">  
+                <property name = "supportedMediaTypes">  
+                     <list>  
+                         <value>text/plain;charset=UTF-8</value>  
+                     </list>  
+                </property>  
+             </bean>  
+	     </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- The controllers are autodetected POJOs labeled with the @Controller 
+		annotation. -->
+	<!-- 扫描指定包里的类的注解 -->
+	<context:component-scan base-package="cn.nhorizon">
+		<!-- 扫描@Controller注解 -->
+		<context:include-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+	</context:component-scan>
+
+	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
+	<mvc:annotation-driven />
+	<mvc:resources mapping="/file/**" location="/WEB-INF/file/" />
+	<mvc:resources mapping="/views/**" location="/WEB-INF/views/" />
+	<mvc:resources location="/, /WEB-INF/, classpath:/META-INF/web-resources/"
+		mapping="/resources/**" />
+	
+	<!-- Allows for mapping the DispatcherServlet to "/" by forwarding static resource requests to the container's default Servlet -->
+	<mvc:default-servlet-handler/>
+
+	<!-- register "global" interceptor beans to apply to all registered HandlerMappings -->
+	<!-- 使用以下拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/sp/*"/>
+			<bean class="cn.nhorizon.sp.interceptor.RequestInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/cp/initOrder"/>
+			<bean class="cn.nhorizon.cp.interceptor.RequestInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/cp/initOrder"/>
+			<bean class="cn.nhorizon.cp.interceptor.BlackListInterceptor" />
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/cp/initOrder"/>
+			<bean class="cn.nhorizon.cp.interceptor.WhiteListInterceptor" />
+		</mvc:interceptor>		
+
+<!-- 		<mvc:interceptor>
+			<mvc:mapping path="/cp/initOrder"/>
+			<bean class="cn.nhorizon.cp.interceptor.ViewLimitInterceptor" />
+		</mvc:interceptor>	 -->
+								
+	</mvc:interceptors>
+	
+	<!-- allows for integration of file upload functionality -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jspx"/>
+		<property name="order" value="3" />
+	</bean>
+	
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">	
+		<property name="order" value="1" />
+	</bean>
+
+
+</beans>

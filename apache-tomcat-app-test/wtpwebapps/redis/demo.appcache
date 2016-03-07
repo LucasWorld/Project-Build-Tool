@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# VERSION 6.0
+
+# 直接缓存的文件
+CACHE:
+m.js
+m1.js
+index.html
+
+NETWORK:
+cache.html 
+
+# 替代方案
+FALLBACK:
+#/ajax/ ajax.html

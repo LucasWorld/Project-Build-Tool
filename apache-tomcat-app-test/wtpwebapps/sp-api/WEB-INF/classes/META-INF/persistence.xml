@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!-- value="create" to build a new database on each run; value="update" to modify an existing database; value="create-drop" means the same as "create" but also drops tables when Hibernate closes; value="validate" makes no changes to the database -->
+            <property name="hibernate.hbm2ddl.auto" value="none"/>
+            <property name="hibernate.connection.charSet" value="UTF-8"/>
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+        
+		<mapping-file>META-INF/orm.xml</mapping-file>
+		<class>cn.nhorizon.sp.database.domain.Account</class>
+		<class>cn.nhorizon.sp.database.domain.AccountRole</class>
+		<class>cn.nhorizon.sp.database.domain.Role</class>
+		<class>cn.nhorizon.sp.database.domain.Authority</class>
+		<class>cn.nhorizon.sp.database.domain.AccountAuthority</class>
+		<class>cn.nhorizon.sp.database.domain.Business</class>
+		<class>cn.nhorizon.sp.database.domain.SubBusiness</class>
+		<class>cn.nhorizon.sp.database.domain.ContentProvider</class>
+		<class>cn.nhorizon.sp.database.domain.ContentProviderBill</class>
+		<class>cn.nhorizon.sp.database.domain.ContentProviderCode</class>
+		<class>cn.nhorizon.sp.database.domain.Dictionary</class>
+		<class>cn.nhorizon.sp.database.domain.DictionaryValue</class>
+		<class>cn.nhorizon.sp.database.domain.Scale</class>
+		<class>cn.nhorizon.sp.database.domain.ServiceProvider</class>
+		<class>cn.nhorizon.sp.database.domain.ServiceProviderCode</class>
+		<class>cn.nhorizon.sp.database.domain.Province</class>
+		<class>cn.nhorizon.sp.database.domain.City</class>
+		<class>cn.nhorizon.sp.database.domain.ViewLimit</class>
+		<class>cn.nhorizon.sp.database.domain.OperaOrder</class>
+		<exclude-unlisted-classes />        
+    </persistence-unit>
+</persistence>
